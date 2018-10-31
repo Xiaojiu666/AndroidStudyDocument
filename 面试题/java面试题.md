@@ -81,4 +81,16 @@
 #12.内部类
 -	https://www.cnblogs.com/latter/p/5665015.html
 
-#13.
+#13.Object中有哪些方法，有什么作用(百度)
+
+#14.请分别简述ArrayList、HashSet、TreeSet、HasMap、TreeMap、ConcurrentHashMap、、LinkedHashMap的区别(百度)
+
+#15.java中有哪些引用方式，请做详细解释(百度)
+
+#16.java线程同步的方法有哪几种，请做解释(百度)
+
+#17.简述JVM的gc几种方式 (百度)
+
+#18.JAVA如何读取文件"input.txt"的内容，并写入到"output.txt" 中，写出核心代码(百度)
+
+

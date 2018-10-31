@@ -1,0 +1,35 @@
+#一、Activity生命周期
+	
+![](https://images0.cnblogs.com/i/426802/201406/060009291302389.png)
+
+
+##1.生命周期顺序	
+-	1. onCreat() 
+-	2. onStart()
+-	3. onResume()
+-	4. onPaue()
+-	5. onStop()
+-	6. onResttart()
+-	7. onDestory()返回键点击时触发
+
+##2.跳转生命周期
+###A-->B顺序
+ A onCreat()-->A onStart()-->A onResume()-->A  onPaue()--> B onCreat()--> B onStart()--> B onResume() --> A onStop()
+
+
+#二.启动模式
+
+##1.默认
+	standard模式，这种模式下，Activity可以有多个实例，每次启动Activity，无论任务栈中是否已经有这个Activity的实例，
+	系统都会创建一个新的Activity实例
+##2.singleTop
+	SingleTop模式和standard模式非常相似，主要区别就是当一个singleTop模式的Activity已经位于任务栈的栈顶，
+	再去启动它时，不会再创建新的实例,如果不位于栈顶，就会创建新的实例，现在把配置文件中FirstActivity的启动模式改为SingleTop，
+	我们的应用只有一个Activity，FirstActivity自然处于任务栈的栈顶。
+##3.singleTask
+	SingleTask模式的Activity在同一个Task内只有一个实例，如果Activity已经位于栈顶，系统不会创建新的Activity实例
+	，和singleTop模式一样。但Activity已经存在但不位于栈顶时，系统就会把该Activity移到栈顶，并把它上面的activity出栈。
+##4.singleInstance 
+	开启一个新的栈，singleInstance模式也是单例的，但和singleTask不同，singleTask只是任务栈内单例，系统里是可以有多个singleTask Activity实例的，
+
+		
