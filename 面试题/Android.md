@@ -22,7 +22,7 @@
 ###3.使用步骤
 
 #3.如果对图片进行采样压缩，假设图片是TEST.JPG,请写出简要原理(百度)
-
+https://blog.csdn.net/bluezhangfun/article/details/50402639
 #4.Touch事件分发机制(百度)
 
 #5.
