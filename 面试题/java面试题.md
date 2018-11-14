@@ -82,6 +82,8 @@
 -	https://www.cnblogs.com/latter/p/5665015.html
 
 #13.Object中有哪些方法，有什么作用(百度)
+- 1.clone()，复制对象
+- 2.
 
 #14.请分别简述ArrayList、HashSet、TreeSet、HasMap、TreeMap、ConcurrentHashMap、、LinkedHashMap的区别(百度)
 

@@ -22,7 +22,16 @@
 ###3.使用步骤
 
 #3.如果对图片进行采样压缩，假设图片是TEST.JPG,请写出简要原理(百度)
-https://blog.csdn.net/bluezhangfun/article/details/50402639
+	https://blog.csdn.net/bluezhangfun/article/details/50402639
+	1.设置bitmapFactory.options中的 inJustDecodeBunlde 对第一次采样进行配置， ture 只读文件的宽高，不读大小进内存
+	2.通过bitmapFactory.decodeFile进行对图片的获取，
+	3.进行采样率计算
+	3.1 根据屏幕的宽高，根据通过options获取的图片宽高，进行计算
+	3.2 如果图片宽高的1/2 / 采样率 还是大于屏幕的宽高，通过while循环继续循环增加采样率，直到图片宽高小于屏幕的宽和高，inSampleSize*=2 每次翻两倍
+	4.通过计算出的采样率，设置给options.insmple()
+	5.设置每一个像素点的存储方式 inPreferredConfig =Bitmap.Config.RGB565
 #4.Touch事件分发机制(百度)
 
 #5.
+
+
