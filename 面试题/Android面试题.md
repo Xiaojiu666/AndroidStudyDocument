@@ -11,15 +11,15 @@
 
 
 #2.说说你对AIDL的理解，原理及其步骤(百度)
-###1.AIDL介绍:AIDL,安卓端跨进程通信，
+###2.1.AIDL介绍:AIDL,安卓端跨进程通信，
 	AIDL，全称是Android Interface Define Language，即安卓接口定义语言，可以实现安卓设备中进程之间的通信（Inter Process Communication, IPC）。
 	假设有如下场景，需要计算a+b的值，在客户端中获取a和b的值，然后传递给服务端，服务端进行a+b的计算，并将计算结果返回给客户端。
 	这里的客户端和服务端均是指安卓设备中的应用，由于每一个应用对应一个进程，由此可以模拟安卓系统中通过AIDL进行进程之间的通信。
 	AIDL的具体使用步骤如下：
 
-###2.AIDL原理
+###2.2.AIDL原理
 
-###3.使用步骤
+###2.3.使用步骤
 
 #3.如果对图片进行采样压缩，假设图片是TEST.JPG,请写出简要原理(百度)
 	https://blog.csdn.net/bluezhangfun/article/details/50402639
@@ -32,6 +32,20 @@
 	5.设置每一个像素点的存储方式 inPreferredConfig =Bitmap.Config.RGB565
 #4.Touch事件分发机制(百度)
 
-#5.
+#5.ListView和RecyclerView的使用，区别？
+
+#6.Git问题
+###6.1新建一个分支
+	git branch text
+###6.2提交修改内容
+	git add ”“
+	git commit
+###6.3把test分支合并到develop 
+	git merge develop
+###6.4把develop推送到远程服务器
+	git remote add origin ”地址“
+###6.5更新develop分支
+	git checkout develop
+	
 
 

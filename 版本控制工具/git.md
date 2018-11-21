@@ -12,6 +12,21 @@
 ![](http://www.runoob.com/wp-content/uploads/2015/03/271123401437312.png)
 
 ##2.Github命令
+####2.1简单初始化版本库
+	1. git init 						//把当前文件夹 初始化为git仓库
+	2. git add “fileName” 				//添加一个文件到 git仓库里
+	3. git commit -m “更新内容”			//提交添加的文件到git仓库
+
+
+####2.2版本操作控制
+	1. git reset --hard “commit_id”		//回滚到指定版本号上
+	2. git log							//查看提交的历史版本
+	3. git reflog						//查看历史操作命令
+	4. git reset --hard HEAD^			//回滚到上一版本
+	5. head								//表示当前版本
+	6. git checkout 					//检出
+	7. 
+	1.
 	1. 上传
 		1. 登陆github创建一个Repository，复制仓库地址
 		2. echo "# Test" >> README.md  //创建一个名为Readme.md的文档，内容是# Test
