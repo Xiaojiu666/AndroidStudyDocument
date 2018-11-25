@@ -25,26 +25,32 @@
 	4. git reset --hard HEAD^			//回滚到上一版本
 	5. head								//表示当前版本
 	6. git checkout 					//检出
-	7. 
-	1.
-	1. 上传
-		1. 登陆github创建一个Repository，复制仓库地址
-		2. echo "# Test" >> README.md  //创建一个名为Readme.md的文档，内容是# Test
-		3. git init						//建立并初始化Git仓库
-		4. git add .					//将项目的所有文件添加到仓库中
-		5. git commit -m "注释语句"		//提交到仓库
-		6. git remote add origin https: //将本地的仓库关联到GitHub  remote(远程)  origin(源头)
-		7. git pull origin master		//上传github之前pull一下
-		8. git push -u origin master		//上传代码到GitHub远程仓库
+
+####2.3远程仓库操作
+	1. git remote add origin https: //将本地的仓库关联到GitHub  remote(远程)  origin(源头)
+	2. git pull origin master		//上传github之前pull一下
+	3. git push -u origin master		//上传代码到GitHub远程仓库
 	
-	2. 更新上传
-		1. git status					//查看代码状态
-		2. git add *					//更新所有代码
-		3. git commit -m "更新说明"		//提交并加说明
-		4. git pull						//先git pull,拉取当前分支最新代码
-		5. git push origin master		//push到远程master分支上
+####2.4分支管理
+	1. 查看分支：git branch
+	2. 创建分支：git branch <name>
+	3. 切换分支：git checkout <name>
+	4. 创建+切换分支：git checkout -b <name>
+	5. 合并某分支到当前分支：git merge <name>
+	6. 删除分支：git branch -d <name>
+	7. git log --graph					//查看分支合并图
+	8. git stash						//隐藏当前分支，作用:如果不隐藏子分支，当主分支出现问题的时候，切换主分支的时候，子分支的内容会出现在主分支里面
+	9. git stash pop					//回复隐藏内容
+	10. git branch -D <name>			//删除分支
 
-
+####2.5标签
+	1. git tag <name>					//为分支打一个标签
+	2. git tag							//查看标签
+	3. git tag version commit_id		//为一个版本打一个标签
+	4. 命令git push origin <tagname>可以推送一个本地标签
+	5. 命令git push origin --tags可以推送全部未推送过的本地标签
+	6. 命令git tag -d <tagname>可以删除一个本地标签
+	7. 命令git push origin :refs/tags/<tagname>可以删除一个远程标签
 
 ##3.GitGUI
 	
