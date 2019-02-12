@@ -6,9 +6,9 @@
 
 ###1 实现层级布局:通过继承RecyclerView.LayoutManager打造类似于Linnerlayoutmanager
 ##### 1.1 实现generateDefaultLayoutParams()方法
-	
+
 		实现generateDefaultLayoutParams，作用:ViewGroup中方法，用于获取子ViewGroup的
-##### 1.2 实现onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state)方法 
+##### 1.2 实现onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state)方法
 		此方法通过父类调用，像子类发送两个参数，Recycler的对象和状态对象，方便对子View的管理
 
 ###2 通过onLayoutChildren()方法进行子View布局管理
@@ -30,5 +30,5 @@
 ##### 2.1 onChildDraw() 针对swipe和drag状态，整个过程中一直会调用这个函数,随手指移动的view就是在super里面做到的(和ItemDecoration里面的onDraw()函数对应)
 ##### 2.1 clearView() 针对swipe和drag状态，当一个item view在swipe、drag状态结束的时候调用 drag状态：当手指释放的时候会调用swipe状态：当item从RecyclerView中删除的时候调用，一般我们会在onSwiped()函数里面删除掉指定的item view
 
-##### 2.1 
-##### 2.1 
+##### 2.1
+##### 2.1

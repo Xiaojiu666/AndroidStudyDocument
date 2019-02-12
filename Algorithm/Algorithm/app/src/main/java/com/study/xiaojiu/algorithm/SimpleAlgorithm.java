@@ -12,6 +12,105 @@ import java.util.Set;
 public class SimpleAlgorithm extends BaseAlgorithm {
     public static final String TAG = "SimpleAlgorithm";
 
+
+    /**
+     * 无数学运算符加法(lintcode--1)
+     * 无数学运算符时，应该想到使用逻辑运算符，
+     * 与（&）： A&B    都为 1  结果为 1
+     * 或（\）： A\b    只有一为1  结果为1
+     * 异或（^）：A^B   相同为0  不同为1
+     * 逻辑运算符有一个定论，当一个数字与另一个数字进行与（&）运算 结果为 0 时，他们的 亦或(^)运算结果必为他们的和
+     * 6 = 0110
+     * 9 = 1001
+     * 与 等于0 ， 异或等于 和 15
+     * <p>
+     * 递归左移一位的目的就是让第一个数字 和第二位数字的 &运算的结果为0
+     * 第一位数一直左移会对运算结果产生影响么？
+     * 不会 因为第二位数一直在变化
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public static int aplusb(int a, int b) {
+        int c = a & b;
+        int d = a ^ b;
+        System.out.println(TAG + "C:" + c);
+        System.out.println(TAG + "D:" + d);
+        return c == 0 ? d : aplusb(c << 1, d);
+    }
+
+
+    /**
+     * 计算出n阶乘中尾部零的个数(lintcode--2)
+     * 设计一个算法，计算出n阶乘中尾部零的个数
+     * 1. 方法一： 直接计算出该数的值，统计尾部的0 ，不推荐 耗时 并且结果会超出int的类型上限
+     * 2. 方法二： 以5为迭代步数，  分析发现代码的时间复杂度实际是O(N/5)~=O(N)
+     *
+     * @param n
+     * @return 参考资料：https://blog.csdn.net/surp2011/article/details/51168272
+     */
+    public static long trailingZeros(long n) {
+
+        //方法二：分析发现代码的时间复杂度实际是O(N/5)~=O(N)
+//        long count = 0;
+//        long pwr = 25;
+//        for (long temp = 5; temp <= n; temp += 5) {
+//            // for循环内部的temp都是5的倍数，因此首先进行+1操作
+//            count++;
+//            pwr = 25;
+//            // 判断是不是25、125、625...的倍数，并根据每次pwr的变化进行+1操作
+//            while (temp % pwr == 0) {
+//                count++;
+//                pwr *= 5;
+//            }
+//        }
+//        return count;
+
+
+        long count = 0;
+        long temp = n / 5;
+        while (temp != 0) {
+            count += temp;
+            temp /= 5;
+        }
+        return count;
+
+    }
+
+    /**
+     * 统计数字(lintcode--3)
+     * 计算数字k在0到n中的出现的次数，k可能是0~9的一个值
+     *
+     * @param k
+     * @param n
+     * @return
+     */
+
+    public static int digitCounts(int k, int n) {
+        // write your code here
+        int count = 0 , x;
+        if (k == 0 && n == 0) count = 1;
+//        for (int i = 1;x = n / i;i *= 10) {
+//            int high = x / 10;
+//            if (k == 0) {
+//                if (high) high--;
+//                else {
+//                    count++;
+//                    break;
+//                }
+//            }
+//            count += high * i;
+//            int current = x % 10;
+//            if (current > k) count += i;
+
+//            else if (current == k) count += n - x * i + 1;
+//        }
+        return count;
+
+    }
+
+
     /**
      * 快乐数(lintcode--488)
      * 快乐数（happy number）有以下的特性：
@@ -73,10 +172,9 @@ public class SimpleAlgorithm extends BaseAlgorithm {
 //        for (int i = 0; i < split.length; i++) {
 //            split[i] = split[split.length - i - 1];
 //        }
-       for (int i = 0 ;i<list.size();i++){
+        for (int i = 0; i < list.size(); i++) {
             System.out.println(list.get(i));
-       }
-
+        }
 
 
         return list.toString();

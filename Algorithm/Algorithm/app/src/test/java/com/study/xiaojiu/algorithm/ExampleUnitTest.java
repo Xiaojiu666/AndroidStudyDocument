@@ -13,7 +13,9 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
-     //   System.out.println(SimpleAlgorithm.isHappyNumber(4));
-        System.out.println(SimpleAlgorithm.flipWord("AA bb cc dd"));
+        //   System.out.println(SimpleAlgorithm.isHappyNumber(4));
+        //System.out.println(SimpleAlgorithm.flipWord("AA bb cc dd"));
+       // System.out.println(SimpleAlgorithm.aplusb(6, 1));
+        System.out.println(SimpleAlgorithm.digitCounts(9, 999));
     }
 }
