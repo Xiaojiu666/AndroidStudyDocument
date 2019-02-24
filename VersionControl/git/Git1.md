@@ -48,8 +48,21 @@
 - git log -p -2   //最近两个历史版本对比
 
 ###### 远程仓库
+- git clone [url]    //检出指定Url上的仓库内容
 - git remote         //
+- git remote -v      //查看当前本地文件的远程仓库信息
+- git remote add [shortname] [url] //将本地仓库与远程仓库管理
+- git remote show [shortname]   //查看某个远程仓库的详细信息
+- git pull       //抓取数据合并到本地
+- git remote rename [old name] [new name]  //重命名
+- git remote rm [shortname]   //移除远程远程仓库关联
 
+###### 打标签
+- git tag
+- git tag -l 'v1.4.2.※'             // 模糊搜索
+- git tag -a [tag name] -m '备注'  //新建
+- git show [tag name]   //查看相应标签的版本信息
+- git tag -a v1.2 9fceb02 //对早先的某次提交加注标签
 
 
 ## Git几种事件命令操作步骤
