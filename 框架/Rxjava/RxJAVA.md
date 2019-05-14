@@ -25,6 +25,23 @@
 ####	2.5compose	//避免打破链式结构
 		配合3.1 可以进行重复代码复用，
 		http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0819/3327.html
+
+
+####	2.6buffer(缓冲)
+		buffer((count)3,(skip)3);
+		将要发射的数据封装成多个缓冲区，每次发射一个缓冲区
+		相当于把一个观察一个List并且响应为多个List
+		如果只传入第一个参数，相当于每个缓冲区的个数，[1,2,3,4...10]  [1,2,3,]
+		第二个参数作用控制每组缓冲区相对于总数要跳过几个开始
+
+
+
+
+
+
+
+
+
 ##	3、接口
 ####	3.1 Transformer(Observalbe转换成Observalbe)
 		new rx.Observable.Transformer<String, Boolean>() {
