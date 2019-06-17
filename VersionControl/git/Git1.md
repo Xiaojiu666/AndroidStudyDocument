@@ -76,6 +76,9 @@
 - git add .      //添加目录下所有文件到暂存区
 - git git commit -m 'initial project version' //提交到版本库
 
+
+######  版本库提交到远程仓库
+
 ###### 本地修改文件后
 - 如果需要提交到版本库 ，重复<本地提交到版本库>
 - 使用 git checkout -- <文件路径>  // git checkout .检出所有
