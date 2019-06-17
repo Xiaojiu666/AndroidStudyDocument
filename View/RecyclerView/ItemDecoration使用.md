@@ -7,4 +7,4 @@
     通过Rect对象set头顶区域的大小
     outRect.set(0, mTitleAttributes.mItemHeight, 0, 0);
 
-####  3.
+####  3.实现 

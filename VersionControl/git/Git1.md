@@ -39,6 +39,11 @@
 - git commit -m 'initial project version'
 - git checkout -- <文件路径>
 
+###### 提交
+- git add -A  提交所有变化
+- git add -u  提交被修改(modified)和被删除(deleted)文件，不包括新文件(new)
+- git add .  提交新文件(new)和被修改(modified)文件，不包括被删除(deleted)文件
+
 ###### 对暂存区操作
 - git add  
 - git rm  //移除
@@ -75,4 +80,8 @@
 - 如果需要提交到版本库 ，重复<本地提交到版本库>
 - 使用 git checkout -- <文件路径>  // git checkout .检出所有
 
-######
+######  远程仓库更新代码
+- $ git remote -v  查看远程仓库信息 会显示出该本地库关联几个远程仓库
+- $ git fetch [name] master   从仓库检出分支
+- $ git merge origin/master   合并本地仓库和远程仓库
+-

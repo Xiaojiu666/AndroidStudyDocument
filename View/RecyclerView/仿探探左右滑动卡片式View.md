@@ -1,10 +1,10 @@
-#一、介绍功能
+##	一、介绍功能
 
-#二、分析需求
+##	二、分析需求
 
-#三、设计业务逻辑
+#	三、设计业务逻辑
 
-###1 实现层级布局:通过继承RecyclerView.LayoutManager打造类似于Linnerlayoutmanager
+####	1 实现层级布局:通过继承RecyclerView.LayoutManager打造类似于Linnerlayoutmanager
 ##### 1.1 实现generateDefaultLayoutParams()方法
 
 		实现generateDefaultLayoutParams，作用:ViewGroup中方法，用于获取子ViewGroup的
@@ -32,3 +32,7 @@
 
 ##### 2.1
 ##### 2.1
+
+
+##	参考资料
+-		1.https://www.jianshu.com/p/b873b717d1ea
