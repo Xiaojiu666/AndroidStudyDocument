@@ -69,6 +69,12 @@
 - git show [tag name]   //查看相应标签的版本信息
 - git tag -a v1.2 9fceb02 //对早先的某次提交加注标签
 
+###### 合并
+- $:git merge origin/master          //合并
+- $:git merge --abort 中止合并
+- $:git reset --merge 重新合并
+-
+
 
 ## Git几种事件命令操作步骤
 
@@ -81,6 +87,7 @@
 
 
 ######  版本库提交到远程仓库
+- git push
 
 ###### 本地修改文件后
 - 如果需要提交到版本库 ，重复<本地提交到版本库>
@@ -88,6 +95,6 @@
 
 ######  远程仓库更新代码
 - $ git remote -v  查看远程仓库信息 会显示出该本地库关联几个远程仓库
-- $ git fetch [name] master   从仓库检出分支
+- $ git fetch [name] master   从仓库检出分支只是从远程获取最新版本到本地,不会merge(合并)
 - $ git merge origin/master   合并本地仓库和远程仓库
--
+- $:git pull origin master  //相当于进行了 git fetch 和 git merge两部操作
