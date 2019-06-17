@@ -74,7 +74,10 @@
 
 ###### 本地提交到版本库
 - git add .      //添加目录下所有文件到暂存区
-- git git commit -m 'initial project version' //提交到版本库
+- git commit -m 'initial project version' //提交到版本库
+
+
+######
 
 ###### 本地修改文件后
 - 如果需要提交到版本库 ，重复<本地提交到版本库>
