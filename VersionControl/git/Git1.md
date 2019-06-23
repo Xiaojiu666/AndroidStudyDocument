@@ -98,3 +98,10 @@
 - $ git fetch [name] master   从仓库检出分支只是从远程获取最新版本到本地,不会merge(合并)
 - $ git merge origin/master   合并本地仓库和远程仓库
 - $:git pull origin master  //相当于进行了 git fetch 和 git merge两部操作
+
+
+
+## 问题
+
+###### Q: Git fetch和git pull的区别, 解决Git报错:error: You have not concluded your merge (MERGE_HEAD exists).
+###### A: https://blog.csdn.net/feng2qing/article/details/56496441
