@@ -111,6 +111,15 @@
 	Activity是Android程序与用户交互的窗口，是Android构造中最基本的一种，它需要为保持各界面的状态，
 	做很多持久化的事情，妥善管理生命周期以及一些跳转逻辑。
 ###### 1.1 activity生命周期
+
+-	1. onCreat()
+-	2. onStart()
+-	3. onResume()
+-	4. onPaue()
+-	5. onStop()
+-	6. onResttart()
+-	7. onDestory()返回键点击时触发
+
 ###### 1.2 activity启动模式
 ###### 1.3 activity进行数据保存和恢复
 	开发者提前可以复写onSaveInstanceState方法，创建一个Bundle类型的参数，
@@ -128,14 +137,215 @@
 ######	3.2什么是AIDL？AIDL的作用是什么？它的基本使用流程是怎么样的？
 
 #### 4.BroadcastReceiver
+		即 广播，是一个全局的监听器，属于Android四大组件之一
+		广播分为两个角色：广播发送者、广播接收者
+		监听 / 接收 应用 App 发出的广播消息，并 做出响应
+		Android不同组件间的通信（含 ：应用内 / 不同应用之间）
+		多线程通信
+		与 Android 系统在特定情况下的通信 如：电话呼入时、网络可用时
+		Android中的广播使用了设计模式中的观察者模式：基于消息的发布 / 订阅事件模型
+		因此，Android将广播的发送者 和 接收者 解耦，使得系统方便集成，更易扩展
+		https://www.jianshu.com/p/ca3d87a4cdf3
+
+![avatar](image\broadcast.png)
+-	广播接收者	消息订阅者
+			继承BroadcastReceivre基类
+			必须复写抽象方法onReceive()方法
+			广播接收器接收到相应广播后，会自动回调 onReceive() 方法
+			一般情况下，onReceive方法会涉及 与 其他组件之间的交互，如发送Notification、启动Service等
+			默认情况下，广播接收器运行在 UI 线程，因此，onReceive()方法不能执行耗时操作，否则将导致ANR
+		-	 静态注册
+					注册方式：在AndroidManifest.xml里通过<receive>标签声明
+
+			实例
+					<receiver>
+					    android:enabled=["true" | "false"]
+					//此broadcastReceiver能否接收其他App的发出的广播
+					//默认值是由receiver中有无intent-filter决定的：如果有intent-filter，默认值为true，否则为false
+					    android:exported=["true" | "false"]
+					    android:icon="drawable resource"
+					    android:label="string resource"
+					//继承BroadcastReceiver子类的类名
+					    android:name=".mBroadcastReceiver"
+					//具有相应权限的广播发送者发送的广播才能被此BroadcastReceiver所接收；
+					    android:permission="string"
+					//BroadcastReceiver运行所处的进程
+					//默认为app的进程，可以指定独立的进程
+					//注：Android四大基本组件都可以通过此属性指定自己的独立进程
+					    android:process="string" >
+
+					//用于指定此广播接收器将接收的广播类型
+					//本示例中给出的是用于接收网络状态改变时发出的广播
+					//意图过滤器
+					 		<intent-filter>
+								<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+					    </intent-filter>
+					</receiver>
+
+		-	 动态注册
+					注册方式：在代码中调用Context.registerReceiver（）方法
+					动态广播最好在Activity 的 onResume()注册、onPause()注销。
+					对于动态广播，有注册就必然得有注销，否则会导致内存泄露
+		实例
+					// 选择在Activity生命周期方法中的onResume()中注册
+						@Override
+					  protected void onResume(){
+					      super.onResume();
+
+					    // 1. 实例化BroadcastReceiver子类 &  IntentFilter
+					     mBroadcastReceiver mBroadcastReceiver = new mBroadcastReceiver();
+					     IntentFilter intentFilter = new IntentFilter();
+
+					    // 2. 设置接收广播的类型
+					    intentFilter.addAction(android.net.conn.CONNECTIVITY_CHANGE);
+
+					    // 3. 动态注册：调用Context的registerReceiver（）方法
+					     registerReceiver(mBroadcastReceiver, intentFilter);
+					 }
+
+					// 注册广播后，要在相应位置记得销毁广播
+					// 即在onPause() 中unregisterReceiver(mBroadcastReceiver)
+					// 当此Activity实例化时，会动态将MyBroadcastReceiver注册到系统中
+					// 当此Activity销毁时，动态注册的MyBroadcastReceiver将不再接收到相应的广播。
+						 @Override
+						 protected void onPause() {
+						     super.onPause();
+						      //销毁在onResume()方法中的广播
+						     unregisterReceiver(mBroadcastReceiver);
+						    }
+					}
+
+-	广播发布者	消息发布者
+			广播 是 用”意图（Intent）“标识
+			定义广播的本质 = 定义广播所具备的“意图（Intent）”
+			广播发送 = 广播发送者 将此广播的“意图（Intent）”通过sendBroadcast（）方法发送出去
+	广播类型
+	-	 普通广播（Normal Broadcast
+
+  -	 系统广播（System Broadcast）
+  -	 有序广播（Ordered Broadcast）
+  -	 粘性广播（Sticky Broadcast）
+  -	 App应用内广播（Local Broadcast）
+
+-	Activity Manager Service	消息中心
+
+
 ######	4.1什么是BroadcastReceiver？它有什么作用？
 ######	4.2什么是有序广播？有序广播有什么特点？什么是系统广播？
 ######	4.3什么是粘性广播？它跟普通广播有什么区别？
+######	4.4两种注册方式的区别？
+![avatar](image\broadcast_diff.png)
 
 #### 5.ContentProvider
+		ContentProvider属于 Android的四大组件之一
+		进程间(应用间) 进行数据交互 & 共享，即跨进程通信
+		ContentProvider的底层原理 = Android中的Binder机制
+		https://www.jianshu.com/p/ea8bc4aaf057
+![avatar](image\URI.png)
+
+		URI
+		通过统一资源标识符（URI）进行数据定位
+		外界进程通过 URI 找到对应的ContentProvider & 其中的数据，再进行数据操作
+		URI分为 系统预置 & 自定义，分别对应系统内置的数据（如通讯录、日程表等等）和自定义数据库
+-	MIME数据类型
+			用于存储数据
+-	ContentProvider类
+			ContentProvider主要以 表格的形式 组织数据
+			每个表格中包含多张表，每张表包含行 & 列，分别对应记录 & 字段
+			进程间共享数据的本质是：添加、删除、获取 & 修改（更新）数据
+    	Android为常见的数据（如通讯录、日程表等）提供了内置了默认的ContentProvider
+    	但也可根据需求自定义ContentProvider，但上述6个方法必须重写
+			ContentProvider类并不会直接与外部进程交互，而是通过ContentResolver 类
+
+-	ContentResolver类
+			统一管理不同 ContentProvider间的操作
+			一般来说，一款应用要使用多个ContentProvider，若需要了解每个ContentProvider的不同实现从而再完成数据交互，操作成本高  & 难度大
+			所以再ContentProvider类上加多了一个 ContentResolver类对所有的ContentProvider进行统一管理。
+实例过程
+			// 使用ContentResolver前，需要先获取ContentResolver
+			// 可通过在所有继承Context的类中 通过调用getContentResolver()来获得ContentResolver
+			ContentResolver resolver =  getContentResolver();
+
+			// 设置ContentProvider的URI
+			Uri uri = Uri.parse("content://cn.scu.myprovider/user");
+
+			// 根据URI 操作 ContentProvider中的数据
+			// 此处是获取ContentProvider中 user表的所有记录
+			Cursor cursor = resolver.query(uri, null, null, null, "userid desc");
+Android 提供了3个用于辅助ContentProvide的工具类：
+	-	    ContentUris	//操作 URI  
+	核心方法有两个：withAppendedId（） &parseId（）
+					// withAppendedId（）作用：向URI追加一个id
+					Uri uri = Uri.parse("content://cn.scu.myprovider/user")
+					Uri resultUri = ContentUris.withAppendedId(uri, 7);  
+					// 最终生成后的Uri为：content://cn.scu.myprovider/user/7
+
+					// parseId（）作用：从URL中获取ID
+					Uri uri = Uri.parse("content://cn.scu.myprovider/user/7")
+					long personid = ContentUris.parseId(uri);
+					//获取的结果为:7
+
+	-    	UriMatcher
+	在ContentProvider 中注册URI
+	根据 URI 匹配 ContentProvider 中对应的数据表
+					// 步骤1：初始化UriMatcher对象
+					UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+					//常量UriMatcher.NO_MATCH  = 不匹配任何路径的返回码
+					// 即初始化时不匹配任何东西
+
+					// 步骤2：在ContentProvider 中注册URI（addURI（））
+					int URI_CODE_a = 1；
+					int URI_CODE_b = 2；
+					matcher.addURI("cn.scu.myprovider", "user1", URI_CODE_a);
+					matcher.addURI("cn.scu.myprovider", "user2", URI_CODE_b);
+					// 若URI资源路径 = content://cn.scu.myprovider/user1 ，则返回注册码URI_CODE_a
+					// 若URI资源路径 = content://cn.scu.myprovider/user2 ，则返回注册码URI_CODE_b
+
+					// 步骤3：根据URI 匹配 URI_CODE，从而匹配ContentProvider中相应的资源（match（））
+
+					@Override   
+					public String getType(Uri uri) {   
+						Uri uri = Uri.parse(" content://cn.scu.myprovider/user1");   
+
+						switch(matcher.match(uri)){   
+					 // 根据URI匹配的返回码是URI_CODE_a
+					 // 即matcher.match(uri) == URI_CODE_a
+						case URI_CODE_a:   
+							return tableNameUser1;   
+							// 如果根据URI匹配的返回码是URI_CODE_a，则返回ContentProvider中的名为tableNameUser1的表
+						case URI_CODE_b:   
+							return tableNameUser2;
+							// 如果根据URI匹配的返回码是URI_CODE_b，则返回ContentProvider中的名为tableNameUser2的表
+					}   
+					}
+  -  		ContentObserver		//内容观察者
+
+				观察 Uri引起 ContentProvider 中的数据变化 & 通知外界（即访问该数据访问者）
+
+					// 步骤1：注册内容观察者ContentObserver
+					    getContentResolver().registerContentObserver（uri）；
+					// 通过ContentResolver类进行注册，并指定需要观察的URI
+
+					// 步骤2：当该URI的ContentProvider数据发生变化时，通知外界（即访问该ContentProvider数据的访问者）
+					    public class UserContentProvider extends ContentProvider {
+					      public Uri insert(Uri uri, ContentValues values) {
+					      db.insert("user", "userid", values);
+					      getContext().getContentResolver().notifyChange(uri, null);
+					      // 通知访问者
+					   }
+					}
+
+						// 步骤3：解除观察者
+					 getContentResolver().unregisterContentObserver（uri）；
+					  // 同样需要通过ContentResolver类进行解除
+
+
+
+
 ######	5.1什么是ContentProvider？如何自定义一个ContentProvider？
 ######	5.2你使用过哪些系统的ContentProvider？
-######	5.3什么是粘性广播？它跟普通广播有什么区别？
+
+
 
 
 
@@ -158,16 +368,23 @@
 ## 线程&&进程方面
 ####	1.线程
 ###### 1.Handler消息机制
-		1、主线程
-		2、子线程
-		3、Message
-		4、MessageQueen
-		5、Handler
-		6、Looper
-###### 2.Binder机制
+		1、作用
+			线程之间通讯
+		主线程、子线程、Message、MessageQueen、Handler、Looper
+###### 2.常见的实现异步的方式有哪些？
 
-####	2.异步
-###### 2.1 常见的实现异步的方式有哪些？
+
+####	2.进程
+###### 1.Binder机制
+
+###### 2.AIDL语法
+		AIDL意思即Android  Interface Definition Language,翻过来就是Android接口定义语言，是用于定义服务端和客户端通信接口的一
+		种描述语言，可以拿来生产IPC代码，从某种意义上说AIDL其实就是一个模板，因为在使用过程中，实际起作用的并不是AIDL文件，而是
+		据此生产的一个Interface的实例代码，AIDL其实是为了避免我们重复写代码而出现的一个模板。
+
+
+
+
 
 ## 性能优化
 ####	1.图片
