@@ -42,8 +42,10 @@
 	git merge develop
 ######	6.4把develop推送到远程服务器
 	git remote add origin ”地址“
+	git push
 ######	6.5更新develop分支
-	git checkout develop
+	$ git fetch [name] master 从仓库检出分支只是从远程获取最新版本到本地,不会merge(合并)
+	$ git merge origin/master 合并本地仓库和远程仓库
 
 ######	7.内存泄露问题
 	内存指程序在申请内存后,无法释放已经申请的内存空间,一次内存泄露危害可以忽略,但内存泄露堆积后的结果很严重,无论多少内存,迟早会被占光
@@ -104,7 +106,8 @@
 ######	1.2 自定义View
 ######	1.3 View的绘制流程
 #### 2.RecyclerView
-######
+######	优化
+https://www.jianshu.com/p/bd432a3527d6
 
 ## 五大组件
 #### 1.activity
@@ -120,7 +123,38 @@
 -	6. onResttart()
 -	7. onDestory()返回键点击时触发
 
+######	A-->B生命周期
+1.Activity1启动：
+      Activity1: onCreate()
+      Activity1: onStart()
+      Activity1: onResume()
+
+ 2.点击按钮跳转到Activity2:
+      Activity1: onPause()
+      Activity2: onCreate()
+      Activity2: onStart()
+      Activity2: onResume()
+      Activity1: onStop()
+
+ 3.从Activity2中返回：
+      Activity2: onPause()
+      Activity1: onRestart()
+      Activity1: onStart()
+      Activity1: onResume()
+      Activity2: onStop()
+      Activity2: onDestroy()
+
+ 4.Activity1退出
+      Activity1: onPause()
+      Activity1: onStop()
+      Activity1: onDestroy()
+
+
 ###### 1.2 activity启动模式
+-	Standard 标准模式
+-	SingleTop 栈顶复用模式
+-	SingleTask 栈内复用模式
+-	SingleInstance		
 ###### 1.3 activity进行数据保存和恢复
 	开发者提前可以复写onSaveInstanceState方法，创建一个Bundle类型的参数，
 	把数据存储在这个Bundle对象中，这样即使Activity意外退出
@@ -133,8 +167,8 @@
 ######
 
 #### 3.service
+![avatar](image\service_diff.png)
 ######	3.1Service的两种使用方式分别是什么？它们的生命周期分别怎样迁移？
-######	3.2什么是AIDL？AIDL的作用是什么？它的基本使用流程是怎么样的？
 
 #### 4.BroadcastReceiver
 		即 广播，是一个全局的监听器，属于Android四大组件之一
@@ -221,19 +255,70 @@
 			广播发送 = 广播发送者 将此广播的“意图（Intent）”通过sendBroadcast（）方法发送出去
 	广播类型
 	-	 普通广播（Normal Broadcast
-
+				即 开发者自身定义 intent的广播（最常用）。发送广播使用如下：
+				Intent intent = new Intent();
+				//对应BroadcastReceiver中intentFilter的action
+				intent.setAction(BROADCAST_ACTION);
+				//发送广播
+				sendBroadcast(intent);
   -	 系统广播（System Broadcast）
+				Android中内置了多个系统广播：只要涉及到手机的基本操作（如开机、网络状态变化、拍照等等），都会发出相应的广播
+
   -	 有序广播（Ordered Broadcast）
+				发送出去的广播被广播接收者按照先后顺序接收
+				sendOrderedBroadcast(intent);
+
   -	 粘性广播（Sticky Broadcast）
   -	 App应用内广播（Local Broadcast）
+				Android中的广播可以跨App直接通信（exported对于有intent-filter情况下默认值为true）
+问题
+				其他App针对性发出与当前App intent-filter相匹配的广播，由此导致当前App不断接收广播并处理；
+				其他App注册与当前App一致的intent-filter用于接收广播，获取广播具体信息；
+				即会出现安全性 & 效率性的问题。
+使用
+		-	将全局广播设置成局部广播
+					注册广播时将exported属性设置为false，使得非本App内部发出的此广播不被接收；
+					在广播发送和接收时，增设相应权限permission，用于权限验证；
+					发送广播时指定该广播接收器所在的包名，此广播将只会发送到此包中的App内与之相匹配的有效广播接收器中。
+
+		-	使用封装好的LocalBroadcastManager类
+					使用方式上与全局广播几乎相同，只是注册/取消注册广播接收器和发送广播时将参数
+					的context变成了LocalBroadcastManager的单一实例
+			实现
+					//注册应用内广播接收器
+					//步骤1：实例化BroadcastReceiver子类 & IntentFilter mBroadcastReceiver
+					mBroadcastReceiver = new mBroadcastReceiver();
+					IntentFilter intentFilter = new IntentFilter();
+
+					//步骤2：实例化LocalBroadcastManager的实例
+					localBroadcastManager = LocalBroadcastManager.getInstance(this);
+
+					//步骤3：设置接收广播的类型
+					intentFilter.addAction(android.net.conn.CONNECTIVITY_CHANGE);
+
+					//步骤4：调用LocalBroadcastManager单一实例的registerReceiver（）方法进行动态注册
+					localBroadcastManager.registerReceiver(mBroadcastReceiver, intentFilter);
+
+					//取消注册应用内广播接收器
+					localBroadcastManager.unregisterReceiver(mBroadcastReceiver);
+
+					//发送应用内广播
+					Intent intent = new Intent();
+					intent.setAction(BROADCAST_ACTION);
+					localBroadcastManager.sendBroadcast(intent);
+
 
 -	Activity Manager Service	消息中心
-
 
 ######	4.1什么是BroadcastReceiver？它有什么作用？
 ######	4.2什么是有序广播？有序广播有什么特点？什么是系统广播？
 ######	4.3什么是粘性广播？它跟普通广播有什么区别？
 ######	4.4两种注册方式的区别？
+######	4.5本地广播和普通广播的区别
+        App应用内广播可理解为一种局部广播，广播的发送者和接收者都同属于一个App。
+        相比于全局广播（普通广播），App应用内广播优势体现在：安全性高 & 效率高
+
+
 ![avatar](image\broadcast_diff.png)
 
 #### 5.ContentProvider
@@ -346,19 +431,22 @@ Android 提供了3个用于辅助ContentProvide的工具类：
 ######	5.2你使用过哪些系统的ContentProvider？
 
 
-
-
-
 #### 6.Intent
 ######	6.1 Intent是什么？有什么用处？
 ######	6.2	Intent如何传值？Bundle是什么，有什么用？
 ######	6.3 序列化的两种方式？区别
+######	6.4 隐士意图和显示意图的区别
 
 
 ## 数据&&网络
 ####	1.数据
 ######	1.1数据常用的数据持久化(长久保存数据)方式有哪些？
 
+######	1.2LRUCache内存缓存
+######	1.3DiskLRUCache硬盘缓存
+
+######	1.4RxCache
+				https://www.jianshu.com/p/d7a25b846a44
 
 ####	2.网络
 ######	2.1TCP和UDP的区别是什么？
@@ -368,11 +456,19 @@ Android 提供了3个用于辅助ContentProvide的工具类：
 ## 线程&&进程方面
 ####	1.线程
 ###### 1.Handler消息机制
+https://blog.csdn.net/feather_wch/article/details/81136078
 		1、作用
 			线程之间通讯
 		主线程、子线程、Message、MessageQueen、Handler、Looper
 ###### 2.常见的实现异步的方式有哪些？
 
+###### looper如何区分多个handler
+			通过sendMessage方法中msg.target.dispatchMessage(msg);
+
+######	子线程中可以创建Handler么？怎么创建？
+			可以直接在子线程中new  Handler ，但是会报错，因为子线程中没有Looper对象，需要去Looper.Looper.prepare()方法
+######	MessageQueue中底层是采用的队列？
+			采用单链表的数据结构来维护消息队列，而不是采用队列
 
 ####	2.进程
 ###### 1.Binder机制

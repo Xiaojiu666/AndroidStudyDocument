@@ -4,10 +4,44 @@
 
 
 ##	2、操作符(方法)
-####	2.1	map(转换)
-![](https://upload-images.jianshu.io/upload_images/3994917-002d843b658b98e5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/620)
+####	from(发射)
+	from()创建符可以从一个列表/数组来创建Observable,并一个接一个的从列表数组中发射出来每一个对象
 
-	将原有的对象转换为另一种对象
+####	just()
+	接收1个以上,10个以下的参数，然后逐个发射。   
+
+####	fromArray()
+	接收一个数组，从数组中一个一个取出来发射。
+
+####	fromIterable();
+
+
+####	转换类操作符
+-	map(转换)
+			将原有的对象转换为任意另一种对象，只会转换一次 属于一对一，适用项目中对某个对象的属性进行转换，
+			eg：例如时间戳转换时间字符串
+-	flatMap
+			将原有的对象转换为Observable，只会转换一次，将原有Observable对象转换成新的Observable对象，
+			并且可以操作新的Observable对象进行数据再一次转换，适合复杂的转换。
+			eg：例如有两个类型相同集合，需要判断是从哪个中获取数据，然后把数据依次发射出来，
+			也可以使用map，但是如果使用map就需要先进性类型判断。
+代码
+
+			flatMap(new Func1<Map<String, List<NewsSummary>>, Observable<NewsSummary>>() {
+									@Override
+									public Observable<NewsSummary> call(Map<String, List<NewsSummary>> stringListMap) {
+										if(ApiConstants.NETEASE_ID_HOUSE.equals(id)){
+															return Observable.from(stringListMap.get("北京"));
+												}else{
+															return Observable.from(stringListMap.get(id));
+										  	}
+									}
+				})
+
+-
+####	过滤类操作符
+-	distinct
+			distinct()的过滤规则是只允许还没有发射过的数据通过，所有重复的数据项都只会发射一次。
 
 ####	2.2contact(先后顺序,控制被观察者的顺序)
 ![](https://upload-images.jianshu.io/upload_images/3994917-717b7a5bae136a0e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/610)
@@ -16,7 +50,7 @@
 	如果缓存没有数据，再通过网络请求获取，随后在主线程更新我们的UI。
 
 
-####	2.3flatMap
+
 
 
 ####	2.4zip(压合,将多个被观察者的结果压合成一条)
@@ -54,3 +88,10 @@
 ##	4、问题
 -		1.A compose.Transformer转换和flatMap 的区别，
 -		1.Q compose.Transformer 操作的是整个的Observalbe   而faltmap针对的是 数据流
+
+
+##	参考资料
+-		https://www.jianshu.com/p/3fdd9ddb534b
+-		https://cloud.tencent.com/developer/article/1334650
+-		https://www.jianshu.com/p/3a188b995daa
+-		https://www.jianshu.com/p/3fdd9ddb534b

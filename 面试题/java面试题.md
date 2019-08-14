@@ -30,6 +30,7 @@
 -	非new生成的Integer变量和new Integer()生成的变量比较时，结果为false。（因为非new生成的Integer变量指向的是java常量池中的对象，而new Integer()生成的变量指向堆中新建的对象，两者在内存中的地址不同）
 -	两个不是new出来的Integer，而是诸如Integer i = x，如果x的范围在-128～127，因为如下语句： Integer i5 = 127;//java在编译的时候,被翻译成-> Integer i5 = Integer.valueOf(127); 调用了Integer.valueOf (), 这会将127缓存，下次我们写：Integer i6 = 127;时，i6指向缓存中的同一个对象。所以此时i5==i6是true； 当x范围在-128～127之外，没有缓存存在，即使他们包裹的数值相等，他们也不能使用==的到true。
 -	int和Integer的比较，无论Integer是否使用new，其值和将和平常的预料的一样:Integer自动拆箱，然后和int比较数值.这里就不会被内存地址的不同所影响，该相等时就相等。
+-	问题：https://blog.csdn.net/xingxinghann/article/details/80336644
 
 ####	5.多态
 - Java实现多态有三个必要条件：继承、重写、向上转型。
@@ -43,6 +44,56 @@
 	- String：适用于少量的字符串操作的情况
 	-　　StringBuilder：适用于单线程下在字符缓冲区进行大量操作的情况
 	-　　StringBuffer：适用多线程下在字符缓冲区进行大量操作的情况
+
+
+####	什么是 String.intern() ？ 何时使用？ 为什么使用 ？
+-	https://blog.csdn.net/u013366617/article/details/83618361
+
+####	指出下列程序运行的结果
+		public class Example {
+			String str = new String("good");
+			char[] ch = {'a','b','c'};
+
+			public static void main(String[]args) {
+			Example ex = new test2();
+			ex.change(ex.str,ex.ch);
+			System.out.print(ex.str+" and ");
+			System.out.println(ex.ch);
+			}
+
+			public void change(String str,char[] ch) {
+			str = "test ok";
+			ch[0] = 'g';
+			}
+		}
+
+		good and gbc
+
+
+####	判断下面输出结果
+			String a = new String("myString");
+			String b = "myString";
+			String c = "my" + "String";
+			String d = c;
+			System.out.print(a == b); false
+			System.out.print(a == c); f
+			System.out.print(b == c);	t
+			System.out.print(b == d);	t
+
+####	输出值
+		递归时 ，一定要看清楚条件
+		split（12）
+		public static int split(int number) {
+			 if (number > 1){
+					 if (number % 2 != 0) System.out.print(split((number + 1) / 2));
+					 System.out.print(split(number / 2));
+			 }
+			 return number;
+		}
+		12136
+
+
+
 
 ####	7.泛型通配符extends与super的区别
 -	1.<? extends T> 只能用于方法返回，告诉编译器此返参的类型的最小继承边界为T，T和T的父类都能接收，但是入参类型无法确定，只能接受null的传入
@@ -77,14 +128,17 @@
 			（如关闭连接、关闭文件），之后才进行垃圾回收，这个方法一般不会显示的调用，
 			在垃圾回收时垃圾回收器会主动调用。
 
+####	 try{} catch{} finally{} 是如何工作的
+-	https://blog.csdn.net/qq_24309787/article/details/81304855
+
 ####	11.static关键字
 		static是Java里的非访问修饰符，它可以用来创建类方法和类变量。
 -	修饰方法
-		当修饰一个方法的时候，此方法就成了独立于对象的静态方法，
-		静态方法不能使用类的非静态变量，因为静态方法和静态变量先于非静态的其他成员初始化，
-		静态方法先出来，然后才是非静态的，所以明白这个顺序很重要。
-		静态方法从参数列表得到数据，然后计算这些数据。
-		修饰方法时，此方法能够不用在初始化对象的前提下直接调用，即，可以直接通过类名.static方法（）这样来访问。
+			当修饰一个方法的时候，此方法就成了独立于对象的静态方法，
+			静态方法不能使用类的非静态变量，因为静态方法和静态变量先于非静态的其他成员初始化，
+			静态方法先出来，然后才是非静态的，所以明白这个顺序很重要。
+			静态方法从参数列表得到数据，然后计算这些数据。
+			修饰方法时，此方法能够不用在初始化对象的前提下直接调用，即，可以直接通过类名.static方法（）这样来访问。
 
 - 修饰变量
 		当修饰一个变量的时候，此变量就成了独立于对象的静态变量，无论一个类实例化了多少个对象
@@ -130,6 +184,15 @@
 
 ####	14.请分别简述ArrayList、HashSet、TreeSet、HasMap、TreeMap、ConcurrentHashMap、LinkedHashMap的区别(百度)
 		AndroidStudyDocument\Java\集合数组&数据类型\集合数组.xlsx
+
+
+####	关于java集合下列说法不正确的有哪些 A
+			A、HashSet 它是线程安全的，不允许存储相同的对象 				//不安全
+			B、ConcurrentHashMap 它是线程安全的，其中存储的键对象可以重复，值对象不能重复
+			C、Collection接口是List接口和Set接口的父接口，通常情况下不被直接使用
+			D、ArrayList线程安全的，允许存放重复对象							  //不安全
+
+
 
 
 
@@ -206,7 +269,7 @@
 					如果程序发现某个虚引用已经被加入到引用队列，那么就可以在所引用的对象的内存被回收之前采取必要的行动。
 
 ####	16.java线程同步的方法有哪几种，请做解释(百度)
-- synchronized关键字
+-  synchronized关键字
 
 -  wait和notify
 
@@ -221,6 +284,10 @@
 ####	16 参考资料
 -	1.https://blog.csdn.net/scgyus/article/details/79499650			//java中线程同步的几种方法
 
+####	可回收对象的判定
+-	引用计数算法
+-	可达性分析算法（根搜索算法）
+
 
 ####	17.简述JVM的gc几种方式 (百度)
 https://blog.csdn.net/seriousplus/article/details/80780243
@@ -228,7 +295,9 @@ https://blog.csdn.net/seriousplus/article/details/80780243
 
 -  复制收集方式
 
--  引用计数方式
+-  标记整理算法
+
+-	 分代回收算法(虚拟机默认的算法)
 ####	18.JAVA如何读取文件"input.txt"的内容，并写入到"output.txt" 中，写出核心代码(百度)
 
 -	字节流
@@ -252,10 +321,9 @@ https://blog.csdn.net/seriousplus/article/details/80780243
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
+-	 字符流
 
-###18.2 字符流
-
-	try {
+			try {
             FileWriter fileWriter = new FileWriter(outputText);
             FileReader fileReader = new FileReader(inputText);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);

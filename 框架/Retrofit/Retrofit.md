@@ -16,6 +16,10 @@
 
 
 
+## 源码分析
+    Retrofit.create(service) -进入create方法->Proxy.newProxyInstance(service.getClassLoader(), new Class<?>[] { service },  new InvocationHandler() 通过 动态代理 去代理我们传入的接口，方法，和参数，获取所有接口中的方法--->通过loadServiceMethod(method)方法，将接口中定义的方法转换成注释上面请求的网络路径包装类ServiceMethod类—-->将需要的请求路径 和参数传入到new OkHttpCall<>(serviceMethod, args)--》通过 OkHttpCall 类 enqueue（）执行网络请求，将 请求路径和地址进行拼接
+
+
 ## 参考资料
 
 ####### https://www.jianshu.com/p/f57b7cdb1c99
