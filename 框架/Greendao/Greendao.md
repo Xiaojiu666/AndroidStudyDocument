@@ -5,7 +5,7 @@
   ![avatar](greendao.png)
 
 ##  关键类&&方法&&属性
-####  DaoMaster
+####  DaoMaster(数据库管理帮助类--用于创建数据和表)自动生成
     DaoMaster保存数据库对象（SQLiteDatabase）并管理特定模式的DAO类（而不是对象）。
     它有静态方法来创建表或删除它们。它的内部类OpenHelper和DevOpenHelper是SQLiteOpenHelper实现
     ，它们在SQLite数据库中创建模式。
@@ -33,8 +33,11 @@
             mavenCentral() // add repository
           }
           dependencies {
-            classpath 'com.android.tools.build:gradle:3.1.2'
-            classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
+            classpath 'com.android.tools.build:gradle:3.1.2'  
+            classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
+            // add plugin，用于配合gradle插件，用于快捷开发
+            eg:修改实体后，构建后免升级数据库，可以直接修改数据库的属性
+            eg:新增实体时发现问题，实现Serializable接口的实体 需要加上serialVersionUID常亮，否则不能自动生成新的数据库的映射字段
             }
 
 
