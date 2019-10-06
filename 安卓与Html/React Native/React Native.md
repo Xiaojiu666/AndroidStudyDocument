@@ -44,7 +44,6 @@
 		Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境。 Node.js 使用了一个事件驱动、非阻塞式 I/O 的模型。 [1]
 		Node 是一个让 JavaScript 运行在服务端的开发平台，它让 JavaScript 成为与PHP、Python、Perl、Ruby 等服务端语言平起平坐的脚本语言。
 
-
 -	下载地址，https://nodejs.org/en/   NPM是随同NodeJS一起安装的包管理工具，能解决NodeJS代码部署上的很多问题，类似于安卓的Gradle
 -	工具库
 	-	node -v		//node环境
@@ -62,7 +61,23 @@
 	-	ANDROID_HOME系统变量: 路径就是SDK位置
 	-	给SDK Tools和 Platforms Tools 配置 PATH 环境变量
 
-##	创建一个项目(两种创建方式的包 是不同的)
+####	安装步骤
+配置node的国内镜像
+
+	npm config set registry https://registry.npm.taobao.org --global
+	npm config set disturl https://npm.taobao.org/dist --global
+
+Yarn是 Facebook 提供的替代 npm 的工具，可以加速 node 模块的下载。React Native 的命令行工具用于执行创建、初始化、更新项目、运行打包服务（packager）等任务。
+
+	npm install -g yarn react-native-cli
+
+安装完 yarn 后同理也要设置镜像源：
+
+	yarn config set registry https://registry.npm.taobao.org --global
+	yarn config set disturl https://npm.taobao.org/dist --global
+
+
+####	创建一个项目(两种创建方式的包 是不同的)
 -	方式一：（官方推荐，但需要下载APP Expo扫描，总会报错，具体原因没查到）
 
 		create-react-native-app AwesomeProject
@@ -76,9 +91,41 @@
 		react-native run-android
 
 
+## 示例--HelloWorld
+	import React, { Component } from 'react';
+		import { Text, View } from 'react-native';
+
+			export default class HelloWorldApp extends Component {
+			render() {
+			return (
+					<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+						<Text>Hello, world!</Text>
+					</View>
+			);
+		}
+	}
+
+
+## 语法
+####	let 和 const 命令
+let
+
+		let ES6 新增了let命令，用来声明变量。它的用法类似于var，但是所声明的变量，只在let命令所在的代码块内有效。
+
+const
+
+	const声明一个只读的常量。一旦声明，常量的值就不能改变。
+## 语法--样式
+
+
+
 ##	错误
 
 #######如果以上两种方式混用，可能会导致Cannot find entry file index.android.js
 #######unable to load script from assets ‘index.android bundle’ ,make sure your bundle is packaged correctly or youu’re runing a packager server
 #######解决:创建一个assets文件 在项目的跟目录下执行  react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
 #######原因：
+
+
+##	文章
+-	https://www.cnblogs.com/CyLee/p/9912977.html			//ReactNative 环境的搭建和启动（安卓版）
